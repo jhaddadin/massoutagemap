@@ -55,7 +55,7 @@ for index, row in twoproviders.iterrows():
 
 alloutages = oneprovider.append(twoproviders, ignore_index=True)
 
-towns = gpd.read_file('C:/Data/massoutagemap/shapefile/mass_cities_towns.shp')
+towns = gpd.read_file('shapefile/mass_cities_towns.shp')
 towns = towns[['TOWN_ID', 'TOWN', 'geometry']]
 
 alloutages_poly = towns.merge(alloutages, left_on='TOWN', right_on='town')
