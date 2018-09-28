@@ -1,6 +1,10 @@
 import cartoframes
 import geopandas as gpd
 import requests
+import pandas as pd
+from oauth2client.service_account import ServiceAccountCredentials
+import gspread
+from gspread_dataframe import get_as_dataframe, set_with_dataframe
 
 def get_file_contents(filename):
     try:
@@ -69,3 +73,31 @@ cc.write(alloutages_poly,
           encode_geom=True,
           table_name='mass_outages',
           overwrite=True)
+
+#### Update Google spreadsheet
+
+scope = ['https://spreadsheets.google.com/feeds']
+credentials = ServiceAccountCredentials.from_json_keyfile_name('My Project-cd8f0fca74a6.json', scope)
+gc = gspread.authorize(credentials)
+wks = gc.open("Massachusetts power outage data").sheet1
+
+alloutages_google = alloutages_poly[['town', 'pct_display', 'no_power', 'total_cust']]
+
+for index, row in alloutages_google.iterrows():
+    pct_display_str = str(row['pct_display']) + "%"
+    alloutages_google.at[index,'pct_display_str'] =  pct_display_str
+
+alloutages_google = alloutages_google[['town', 'pct_display_str', 'no_power', 'total_cust']]
+
+alloutages_google = alloutages_google.rename(columns={'town': 'City/Town',
+                                                      'pct_display_str': '% without power',
+                                                      'no_power': 'Outages',
+                                                      'total_cust': 'Total customers'})
+
+alloutages_google = alloutages_google.append({'City/Town': 'State',
+                                    '% without power': '',
+                                    'Outages': alloutages_google['Outages'].sum(),
+                                    'Total customers': ''}, ignore_index=True)
+
+alloutages_google = alloutages_google.sort_values(by='Outages', ascending=False)
+set_with_dataframe(wks, alloutages_google)
