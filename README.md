@@ -1,5 +1,6 @@
-This script scrapes power outage data reported to the Massachusetts Emergency Management Agency by National Grid, Unitil and Eversource and feeds the data into a Google Spreadsheet. The spreadsheet can be used to populate a Fusion Table or Tableau project to update a live chloropleth map of power outages by city and town.
+<h1>Massachusetts power outage map</h1>
+This python script uses power outage data reported to the Massachusetts Emergency Management Agency by National Grid, Unitil and Eversource to power a live map of outages across Massachusetts. MEMA's power outage data is updated every 15 minutes. The script is hosted on the Heroku cloud platform, using a scheduler that executes the code at regular intervals.
 
-The project uses Selenium to load a web browser and navigate to the power outage data on the MEMA website. It uses BeautifulSoup to parse the HTML. Power outage figures are saved into a pandas dataframe, then uploaded to the Google spreadsheet.
+The map is hosted on Carto. It can be embedded by iframe, or directly using Carto's javascript tools. This script also feeds the data into a Google Spreadsheet, which can be used to populate a Google Fusion Table,  Tableau project, etc. See a live example online at metrowestdailynews.com.
 
-Before using the script, it's necessary to obtain OAuth2 credentials from Google and save the json file containing your credentials into the same folder as the script. You will also need ChromeDriver.exe to use Selenium with Google Chrome.
+Before using the script, it's necessary to obtain OAuth2 credentials from Google and save the json file containing your credentials into the same folder as the script.
