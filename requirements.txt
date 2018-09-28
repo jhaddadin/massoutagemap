@@ -9,4 +9,5 @@ requests==2.19.1
 APScheduler==3.0.0
 pandas==0.22
 gspread==3.0.1
+gspread_dataframe
 oauth2client==4.1.0
