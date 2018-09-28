@@ -76,7 +76,8 @@ cc.write(alloutages_poly,
 
 #### Update Google spreadsheet
 
-scope = ['https://spreadsheets.google.com/feeds']
+scope = ['https://spreadsheets.google.com/feeds',
+         'https://www.googleapis.com/auth/drive']
 credentials = ServiceAccountCredentials.from_json_keyfile_name('My Project-cd8f0fca74a6.json', scope)
 gc = gspread.authorize(credentials)
 wks = gc.open("Massachusetts power outage data").sheet1
